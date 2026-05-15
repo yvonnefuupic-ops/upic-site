@@ -134,7 +134,7 @@ function STitle({ text, color = C.neonPink }) {
     <div style={{ textAlign: "center", marginBottom: 48 }}>
       <h2 style={{
         fontFamily: "'Press Start 2P', monospace",
-        fontSize: "clamp(17px, 3vw, 23px)",
+        fontSize: "clamp(14px, 2.5vw, 20px)",
         color: C.white, margin: 0, lineHeight: 1.6
       }}>
         {text}
@@ -356,7 +356,7 @@ function WhatWeOffer() {
     <Sec id="services">
       <div style={{ maxWidth: 1000, margin: "0 auto", padding: "80px 24px" }}>
         <STitle text="WHAT WE OFFER" color={C.neonCyan} />
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 }}>
+        <div className="card-scroll" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 }}>
           {items.map((it) => (
             <div key={it.label} style={{
               background: C.card, border: pxBorder(C.border), padding: "28px 20px",
@@ -373,7 +373,7 @@ function WhatWeOffer() {
                 {it.icon}
               </div>
               <div style={{
-                fontFamily: "'Press Start 2P', monospace", fontSize: 15,
+                fontFamily: "'Press Start 2P', monospace", fontSize: 12,
                 color: C.white, lineHeight: 1.6
               }}>
                 {it.label}
@@ -433,7 +433,7 @@ function PackagesSec() {
     <Sec id="packages">
       <div style={{ maxWidth: 1000, margin: "0 auto", padding: "80px 24px" }}>
         <STitle text="PACKAGES" color={C.neonCyan} />
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(270px, 1fr))", gap: 20 }}>
+        <div className="pkg-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(270px, 1fr))", gap: 20 }}>
           {PKGS.map((p) => (
             <div key={p.name} style={{
               background: C.card, border: pxBorder(C.border),
@@ -445,8 +445,7 @@ function PackagesSec() {
               <div style={{ padding: "24px" }}>
                 <div style={{
                   fontFamily: "'Press Start 2P', monospace", fontSize: 25,
-                  color: p.color, textShadow: txtGlow(p.color), marginBottom: 4,
-                  textAlign: "center"
+                  color: p.color, textShadow: txtGlow(p.color), marginBottom: 4
                 }}>
                   {p.name}
                 </div>
@@ -651,7 +650,7 @@ function BookingSec() {
       <div style={{ maxWidth: 560, margin: "0 auto", padding: "80px 24px" }}>
         <STitle text="BOOK NOW" color={C.neonPink} />
         <form onSubmit={handleSubmit} style={{ border: pxBorder(C.neonPink + "60"), background: C.card, padding: 28 }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          <div className="form-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
             <div>
               <label style={lS}>FULL NAME <span style={{ color: C.neonPink }}>*</span></label>
               <input type="text" value={form.name} onChange={set("name")} style={iS}
@@ -671,7 +670,7 @@ function BookingSec() {
               onFocus={(e) => e.target.style.borderColor = C.neonPink}
               onBlur={(e) => e.target.style.borderColor = C.border} />
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginTop: 16 }}>
+          <div className="form-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginTop: 16 }}>
             <div>
               <label style={lS}>EVENT DATE <span style={{ color: C.neonPink }}>*</span></label>
               <input type="date" value={form.date} onChange={set("date")} style={{ ...iS, colorScheme: "dark" }}
@@ -729,96 +728,75 @@ function BookingSec() {
 
 function ContactSec() {
   const items = [
-    {
-      icon: "\u2709", label: "EMAIL", value: "help.upic@gmail.com",
-      href: "mailto:help.upic@gmail.com", color: C.neonCyan
-    },
-    {
-      icon: "\u25ce", label: "INSTAGRAM", value: "@upic.photobooth",
-      href: "https://instagram.com/upic.photobooth", color: C.neonPink
-    },
-    {
-      icon: "\u25a3", label: "FACEBOOK", value: "U-PIC Photo Booth Service",
-      href: "https://www.facebook.com/profile.php?id=61589423984483&mibextid=wwXIfr", color: C.neonGreen
-    },
-    {
-      icon: "\u25c9", label: "LOCATION", value: "Arcadia, CA",
-      href: null, color: C.neonYellow
-    }
+    { icon: "\u2709", label: "EMAIL", value: "help.upic@gmail.com", href: "mailto:help.upic@gmail.com", color: C.neonCyan },
+    { icon: "\u25ce", label: "INSTAGRAM", value: "@upic.photobooth", href: "https://instagram.com/upic.photobooth", color: C.neonPink },
+    { icon: "\u25a3", label: "FACEBOOK", value: "U-PIC Photo Booth Service", href: "https://www.facebook.com/profile.php?id=61589423984483&mibextid=wwXIfr", color: C.neonGreen },
+    { icon: "\u25c9", label: "LOCATION", value: "Arcadia, CA", href: null, color: C.neonYellow }
   ];
-
   return (
     <Sec id="contact">
       <div style={{ maxWidth: 800, margin: "0 auto", padding: "80px 24px" }}>
         <STitle text="CONTACT" color={C.purple} />
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, alignItems: "stretch" }}>
+        <div className="contact-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, alignItems: "stretch" }}>
           {items.map((it) => {
             const inner = (
-              <div style={{
-                background: C.card, border: pxBorder(C.border), padding: "28px 16px",
-                textAlign: "center", transition: "all 0.25s", cursor: it.href ? "pointer" : "default",
-                display: "flex", flexDirection: "column", alignItems: "center",
-                boxSizing: "border-box", height: "100%"
-              }}
+              <div style={{ background: C.card, border: pxBorder(C.border), padding: "28px 16px", textAlign: "center", transition: "all 0.25s", cursor: it.href ? "pointer" : "default", display: "flex", flexDirection: "column", alignItems: "center", boxSizing: "border-box", height: "100%" }}
                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = it.color; e.currentTarget.style.boxShadow = glow(it.color, 6); }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.boxShadow = "none"; }}
-              >
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.boxShadow = "none"; }}>
                 <div style={{ flex: "1 1 0", display: "flex", alignItems: "flex-end", paddingBottom: 14 }}>
-                  <div style={{
-                    width: 44, height: 44, border: pxBorder(it.color + "60"),
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: 20, color: it.color, flexShrink: 0
-                  }}>
-                    {it.icon}
-                  </div>
+                  <div style={{ width: 44, height: 44, border: pxBorder(it.color + "60"), display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, color: it.color, flexShrink: 0 }}>{it.icon}</div>
                 </div>
-                <div style={{
-                  fontFamily: "'Press Start 2P', monospace", fontSize: 10,
-                  color: it.color, letterSpacing: 2, textShadow: txtGlow(it.color),
-                  paddingBottom: 10, lineHeight: 1.6
-                }}>
-                  {it.label}
-                </div>
-                <div style={{
-                  flex: "1 1 0", display: "flex", alignItems: "flex-start", paddingTop: 4,
-                  fontFamily: "'Space Mono', monospace", fontSize: 13,
-                  color: C.white, wordBreak: "normal", overflowWrap: "break-word",
-                  textAlign: "center", lineHeight: 1.6
-                }}>
-                  {it.value}
-                </div>
+                <div style={{ fontFamily: "'Press Start 2P', monospace", fontSize: 10, color: it.color, letterSpacing: 2, textShadow: txtGlow(it.color), paddingBottom: 10, lineHeight: 1.6 }}>{it.label}</div>
+                <div style={{ flex: "1 1 0", display: "flex", alignItems: "flex-start", paddingTop: 4, fontFamily: "'Space Mono', monospace", fontSize: 13, color: C.white, wordBreak: "normal", overflowWrap: "break-word", textAlign: "center", lineHeight: 1.6 }}>{it.value}</div>
               </div>
             );
             return it.href ? (
-              <a key={it.label} href={it.href} target={it.href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" style={{ textDecoration: "none", display: "block", height: "100%" }}>
-                {inner}
-              </a>
+              <a key={it.label} href={it.href} target={it.href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" style={{ textDecoration: "none", display: "block", height: "100%" }}>{inner}</a>
             ) : (
               <div key={it.label} style={{ height: "100%" }}>{inner}</div>
             );
           })}
         </div>
-        <div style={{
-          marginTop: 24, padding: "24px 28px",
-          border: pxBorder(C.purple + "40"), background: C.purple + "08",
-          textAlign: "center"
-        }}>
-          <div style={{
-            fontFamily: "'Press Start 2P', monospace", fontSize: 11,
-            color: C.purple, marginBottom: 10, textShadow: txtGlow(C.purple)
-          }}>
-            REACH OUT ANYTIME
-          </div>
-          <div style={{
-            fontFamily: "'Space Mono', monospace", fontSize: 14,
-            color: C.gray, lineHeight: 1.8
-          }}>
-            DM us on Instagram or send an email. We typically respond within 48 hours. For urgent requests on event day, text or DM directly.
-          </div>
+        <div style={{ marginTop: 24, padding: "24px 28px", border: pxBorder(C.purple + "40"), background: C.purple + "08", textAlign: "center" }}>
+          <div style={{ fontFamily: "'Press Start 2P', monospace", fontSize: 11, color: C.purple, marginBottom: 10, textShadow: txtGlow(C.purple) }}>REACH OUT ANYTIME</div>
+          <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 14, color: C.gray, lineHeight: 1.8 }}>DM us on Instagram or send an email. We typically respond within 48 hours. For urgent requests on event day, text or DM directly.</div>
         </div>
       </div>
     </Sec>
   );
+}
+
+function PixelFloaters() {
+  const floaters = useRef([]);
+  const mousePos = useRef({ x: -999, y: -999 });
+  const animFrame = useRef(null);
+  const containerRef = useRef(null);
+  const [positions, setPositions] = useState([]);
+  const ITEMS = [
+    { char: "\u2665", color: C.neonPink, size: 16 },{ char: "\u2726", color: C.neonCyan, size: 14 },
+    { char: "\u25c6", color: C.neonYellow, size: 12 },{ char: "\u25a0", color: C.purple, size: 10 },
+    { char: "\u2605", color: C.neonGreen, size: 14 },{ char: "\u25cf", color: C.neonPink, size: 8 },
+    { char: "\u2736", color: C.neonCyan, size: 12 },{ char: "\u25c8", color: C.neonYellow, size: 10 },
+    { char: "\u2665", color: C.purple, size: 14 },{ char: "\u25a0", color: C.neonGreen, size: 8 },
+    { char: "\u2726", color: C.neonPink, size: 16 },{ char: "\u25c6", color: C.neonCyan, size: 10 },
+    { char: "\u2605", color: C.neonYellow, size: 12 },{ char: "\u25cf", color: C.purple, size: 14 },
+    { char: "\u2736", color: C.neonGreen, size: 10 }
+  ];
+  useEffect(() => {
+    const init = ITEMS.map(() => ({ x: Math.random()*100, y: Math.random()*100, baseX: 0, baseY: 0, vx: (Math.random()-0.5)*0.15, vy: (Math.random()-0.5)*0.1, offsetX: 0, offsetY: 0, driftPhase: Math.random()*Math.PI*2, driftSpeed: 0.003+Math.random()*0.004, opacity: 0.12+Math.random()*0.14 }));
+    init.forEach((p) => { p.baseX = p.x; p.baseY = p.y; });
+    floaters.current = init;
+    setPositions(init.map((p) => ({ x: p.x, y: p.y, offsetX: 0, offsetY: 0, opacity: p.opacity })));
+    const onMouse = (e) => { const rect = containerRef.current?.getBoundingClientRect(); if (!rect) return; mousePos.current = { x: ((e.clientX-rect.left)/rect.width)*100, y: ((e.clientY-rect.top)/rect.height)*100 }; };
+    window.addEventListener("mousemove", onMouse, { passive: true });
+    let tt = 0;
+    const tick = () => { tt++; const mx = mousePos.current.x; const my = mousePos.current.y; const arr = floaters.current;
+      arr.forEach((p) => { p.driftPhase += p.driftSpeed; p.x = p.baseX+Math.sin(p.driftPhase)*2.5; p.y = p.baseY+Math.cos(p.driftPhase*0.7)*1.5; p.baseX += p.vx; p.baseY += p.vy; if (p.baseX<-2||p.baseX>102) p.vx*=-1; if (p.baseY<-2||p.baseY>102) p.vy*=-1; p.baseX=Math.max(-2,Math.min(102,p.baseX)); p.baseY=Math.max(-2,Math.min(102,p.baseY)); const dx=p.x-mx; const dy=p.y-my; const dist=Math.sqrt(dx*dx+dy*dy); if(dist<10&&dist>0.1){const force=(10-dist)/10;const angle=Math.atan2(dy,dx);p.offsetX+=Math.cos(angle)*force*1.8;p.offsetY+=Math.sin(angle)*force*1.8;} p.offsetX*=0.92; p.offsetY*=0.92; });
+      if(tt%2===0){setPositions(arr.map((p)=>({x:p.x,y:p.y,offsetX:p.offsetX,offsetY:p.offsetY,opacity:p.opacity})));} animFrame.current=requestAnimationFrame(tick); };
+    animFrame.current=requestAnimationFrame(tick);
+    return()=>{window.removeEventListener("mousemove",onMouse);if(animFrame.current)cancelAnimationFrame(animFrame.current);};
+  }, []);
+  return (<div ref={containerRef} style={{ position:"fixed",inset:0,pointerEvents:"none",zIndex:0,overflow:"hidden" }}>{positions.map((p,i)=>{const item=ITEMS[i];return(<div key={i} style={{ position:"absolute",left:`${p.x+p.offsetX}%`,top:`${p.y+p.offsetY}%`,fontFamily:"'Press Start 2P', monospace",fontSize:item.size,color:item.color,opacity:p.opacity,filter:`drop-shadow(0 0 4px ${item.color}40)`,willChange:"left, top"}}>{item.char}</div>);})}</div>);
 }
 
 function Foot() {
@@ -835,13 +813,13 @@ function Foot() {
       }} />
       <div style={{
         fontFamily: "'Press Start 2P', monospace", fontSize: 14,
-        color: C.neonPink, marginBottom: 15, textShadow: txtGlow(C.neonPink)
+        color: C.neonPink, marginBottom: 8, textShadow: txtGlow(C.neonPink)
       }}>
         U-PIC PHOTO BOOTH
       </div>
       <div style={{
         fontFamily: "'Press Start 2P', monospace", fontSize: 11,
-        color: C.dimGray, marginBottom: 25, letterSpacing: 3
+        color: C.dimGray, marginBottom: 28, letterSpacing: 3
       }}>
         YOUR EVENT. YOUR VIBE. WE CAPTURE.
       </div>
@@ -861,143 +839,9 @@ function Foot() {
       <div style={{
         fontFamily: "'Space Mono', monospace", fontSize: 14, color: C.dimGray, marginTop: 16
       }}>
-        {"\u00a9"} 2026 U-PIC Photobooth. Arcadia, CA.
+        {"\u00a9"} 2026 U-PIC Photobooth. Los Angeles, CA.
       </div>
     </footer>
-  );
-}
-
-function PixelFloaters() {
-  const floaters = useRef([]);
-  const mousePos = useRef({ x: -999, y: -999 });
-  const animFrame = useRef(null);
-  const containerRef = useRef(null);
-  const [positions, setPositions] = useState([]);
-
-  const ITEMS = [
-    { char: "\u2665", color: C.neonPink, size: 16 },
-    { char: "\u2726", color: C.neonCyan, size: 14 },
-    { char: "\u25c6", color: C.neonYellow, size: 12 },
-    { char: "\u25a0", color: C.purple, size: 10 },
-    { char: "\u2605", color: C.neonGreen, size: 14 },
-    { char: "\u25cf", color: C.neonPink, size: 8 },
-    { char: "\u2736", color: C.neonCyan, size: 12 },
-    { char: "\u25c8", color: C.neonYellow, size: 10 },
-    { char: "\u2665", color: C.purple, size: 14 },
-    { char: "\u25a0", color: C.neonGreen, size: 8 },
-    { char: "\u2726", color: C.neonPink, size: 16 },
-    { char: "\u25c6", color: C.neonCyan, size: 10 },
-    { char: "\u2605", color: C.neonYellow, size: 12 },
-    { char: "\u25cf", color: C.purple, size: 14 },
-    { char: "\u2736", color: C.neonGreen, size: 10 },
-  ];
-
-  useEffect(() => {
-    const init = ITEMS.map(() => ({
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      baseX: 0, baseY: 0,
-      vx: (Math.random() - 0.5) * 0.15,
-      vy: (Math.random() - 0.5) * 0.1,
-      offsetX: 0, offsetY: 0,
-      driftPhase: Math.random() * Math.PI * 2,
-      driftSpeed: 0.003 + Math.random() * 0.004,
-      opacity: 0.12 + Math.random() * 0.14,
-    }));
-    init.forEach((p) => { p.baseX = p.x; p.baseY = p.y; });
-    floaters.current = init;
-    setPositions(init.map((p) => ({ x: p.x, y: p.y, offsetX: 0, offsetY: 0, opacity: p.opacity })));
-
-    const onMouse = (e) => {
-      const rect = containerRef.current?.getBoundingClientRect();
-      if (!rect) return;
-      mousePos.current = {
-        x: ((e.clientX - rect.left) / rect.width) * 100,
-        y: ((e.clientY - rect.top) / rect.height) * 100,
-      };
-    };
-    window.addEventListener("mousemove", onMouse, { passive: true });
-
-    let t = 0;
-    const DODGE = 12;
-    const RADIUS = 10;
-
-    const tick = () => {
-      t++;
-      const mx = mousePos.current.x;
-      const my = mousePos.current.y;
-      const arr = floaters.current;
-      let changed = false;
-
-      arr.forEach((p) => {
-        p.driftPhase += p.driftSpeed;
-        p.x = p.baseX + Math.sin(p.driftPhase) * 2.5;
-        p.y = p.baseY + Math.cos(p.driftPhase * 0.7) * 1.5;
-
-        p.baseX += p.vx;
-        p.baseY += p.vy;
-        if (p.baseX < -2 || p.baseX > 102) p.vx *= -1;
-        if (p.baseY < -2 || p.baseY > 102) p.vy *= -1;
-        p.baseX = Math.max(-2, Math.min(102, p.baseX));
-        p.baseY = Math.max(-2, Math.min(102, p.baseY));
-
-        const dx = p.x - mx;
-        const dy = p.y - my;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist < RADIUS && dist > 0.1) {
-          const force = (RADIUS - dist) / RADIUS;
-          const angle = Math.atan2(dy, dx);
-          p.offsetX += Math.cos(angle) * force * DODGE * 0.15;
-          p.offsetY += Math.sin(angle) * force * DODGE * 0.15;
-        }
-
-        p.offsetX *= 0.92;
-        p.offsetY *= 0.92;
-        changed = true;
-      });
-
-      if (changed && t % 2 === 0) {
-        setPositions(arr.map((p) => ({
-          x: p.x, y: p.y,
-          offsetX: p.offsetX, offsetY: p.offsetY,
-          opacity: p.opacity,
-        })));
-      }
-      animFrame.current = requestAnimationFrame(tick);
-    };
-    animFrame.current = requestAnimationFrame(tick);
-
-    return () => {
-      window.removeEventListener("mousemove", onMouse);
-      if (animFrame.current) cancelAnimationFrame(animFrame.current);
-    };
-  }, []);
-
-  return (
-    <div ref={containerRef} style={{
-      position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, overflow: "hidden"
-    }}>
-      {positions.map((p, i) => {
-        const item = ITEMS[i];
-        return (
-          <div key={i} style={{
-            position: "absolute",
-            left: `${p.x + p.offsetX}%`,
-            top: `${p.y + p.offsetY}%`,
-            fontFamily: "'Press Start 2P', monospace",
-            fontSize: item.size,
-            color: item.color,
-            opacity: p.opacity,
-            transition: "opacity 0.3s",
-            filter: `drop-shadow(0 0 4px ${item.color}40)`,
-            willChange: "left, top",
-          }}>
-            {item.char}
-          </div>
-        );
-      })}
-    </div>
   );
 }
 
@@ -1012,10 +856,38 @@ export default function App() {
         ::selection { background: #ff2d7b; color: #000; }
         select option { background: #14141f; color: #f0f0f0; }
         .nav-lnk { display: flex; align-items: center; gap: 20px; }
+        .card-scroll::-webkit-scrollbar { height: 4px; }
+        .card-scroll::-webkit-scrollbar-track { background: #14141f; }
+        .card-scroll::-webkit-scrollbar-thumb { background: #3a3a5a; border-radius: 2px; }
         @media (max-width: 768px) {
           .mob-btn { display: block !important; }
-          .nav-lnk { display: none; position: absolute; top: 56px; left: 0; right: 0; flex-direction: column; background: rgba(10,10,15,0.98); padding: 20px 24px; gap: 16px; border-bottom: 2px solid #2a2a3f; }
+          .nav-lnk {
+            display: none; position: absolute; top: 56px; left: 0; right: 0;
+            flex-direction: column; background: rgba(10,10,15,0.98);
+            padding: 20px 24px; gap: 16px; border-bottom: 2px solid #2a2a3f;
+          }
           .nav-lnk.open { display: flex; }
+          .card-scroll {
+            display: flex !important;
+            overflow-x: auto !important;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 12px !important;
+          }
+          .card-scroll > div {
+            min-width: 75vw !important;
+            flex-shrink: 0 !important;
+            scroll-snap-align: center;
+          }
+          .pkg-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .contact-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+          .form-row {
+            grid-template-columns: 1fr !important;
+          }
         }
       `}</style>
       <Nav />
