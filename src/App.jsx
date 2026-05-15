@@ -90,6 +90,16 @@ function scrollTo(id) {
   if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+function useIsMobile(breakpoint = 768) {
+  const [mobile, setMobile] = useState(window.innerWidth <= breakpoint);
+  useEffect(() => {
+    const h = () => setMobile(window.innerWidth <= breakpoint);
+    window.addEventListener("resize", h);
+    return () => window.removeEventListener("resize", h);
+  }, []);
+  return mobile;
+}
+
 function useInView() {
   const ref = useRef(null);
   const [v, setV] = useState(false);
@@ -330,6 +340,7 @@ function EventTags() {
 }
 
 function WhatWeOffer() {
+  const mobile = useIsMobile();
   const items = [
     {
       icon: "\u25a3", label: "Photo Booth Rental",
@@ -352,15 +363,19 @@ function WhatWeOffer() {
       color: C.neonYellow
     }
   ];
+  const scrollStyle = mobile
+    ? { display: "flex", overflowX: "auto", gap: 16, WebkitOverflowScrolling: "touch", scrollSnapType: "x mandatory", paddingBottom: 12 }
+    : { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 };
+  const cardExtra = mobile ? { minWidth: "75vw", flexShrink: 0, scrollSnapAlign: "center" } : {};
   return (
     <Sec id="services">
       <div style={{ maxWidth: 1000, margin: "0 auto", padding: "80px 24px" }}>
         <STitle text="WHAT WE OFFER" color={C.neonCyan} />
-        <div className="card-scroll" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 }}>
+        <div style={scrollStyle}>
           {items.map((it) => (
             <div key={it.label} style={{
               background: C.card, border: pxBorder(C.border), padding: "28px 20px",
-              transition: "all 0.25s", display: "flex", flexDirection: "column", gap: 12
+              transition: "all 0.25s", display: "flex", flexDirection: "column", gap: 12, ...cardExtra
             }}
               onMouseEnter={(e) => { e.currentTarget.style.borderColor = it.color; e.currentTarget.style.boxShadow = glow(it.color, 6); }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.boxShadow = "none"; }}
@@ -429,11 +444,12 @@ function WhatWeOffer() {
 }
 
 function PackagesSec() {
+  const mobile = useIsMobile();
   return (
     <Sec id="packages">
       <div style={{ maxWidth: 1000, margin: "0 auto", padding: "80px 24px" }}>
         <STitle text="PACKAGES" color={C.neonCyan} />
-        <div className="pkg-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(270px, 1fr))", gap: 20 }}>
+        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3, 1fr)", gap: 20 }}>
           {PKGS.map((p) => (
             <div key={p.name} style={{
               background: C.card, border: pxBorder(C.border),
@@ -579,6 +595,7 @@ function FaqSec() {
 }
 
 function BookingSec() {
+  const mobile = useIsMobile();
   const [form, setForm] = useState({ name: "", email: "", phone: "", date: "", eventType: "", pkg: "", message: "" });
   const [done, setDone] = useState(false);
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
@@ -650,7 +667,7 @@ function BookingSec() {
       <div style={{ maxWidth: 560, margin: "0 auto", padding: "80px 24px" }}>
         <STitle text="BOOK NOW" color={C.neonPink} />
         <form onSubmit={handleSubmit} style={{ border: pxBorder(C.neonPink + "60"), background: C.card, padding: 28 }}>
-          <div className="form-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 16 }}>
             <div>
               <label style={lS}>FULL NAME <span style={{ color: C.neonPink }}>*</span></label>
               <input type="text" value={form.name} onChange={set("name")} style={iS}
@@ -670,7 +687,7 @@ function BookingSec() {
               onFocus={(e) => e.target.style.borderColor = C.neonPink}
               onBlur={(e) => e.target.style.borderColor = C.border} />
           </div>
-          <div className="form-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginTop: 16 }}>
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 16, marginTop: 16 }}>
             <div>
               <label style={lS}>EVENT DATE <span style={{ color: C.neonPink }}>*</span></label>
               <input type="date" value={form.date} onChange={set("date")} style={{ ...iS, colorScheme: "dark" }}
@@ -727,6 +744,7 @@ function BookingSec() {
 }
 
 function ContactSec() {
+  const mobile = useIsMobile();
   const items = [
     { icon: "\u2709", label: "EMAIL", value: "help.upic@gmail.com", href: "mailto:help.upic@gmail.com", color: C.neonCyan },
     { icon: "\u25ce", label: "INSTAGRAM", value: "@upic.photobooth", href: "https://instagram.com/upic.photobooth", color: C.neonPink },
@@ -737,7 +755,7 @@ function ContactSec() {
     <Sec id="contact">
       <div style={{ maxWidth: 800, margin: "0 auto", padding: "80px 24px" }}>
         <STitle text="CONTACT" color={C.purple} />
-        <div className="contact-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, alignItems: "stretch" }}>
+        <div style={{ display: "grid", gridTemplateColumns: mobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: 16, alignItems: "stretch" }}>
           {items.map((it) => {
             const inner = (
               <div style={{ background: C.card, border: pxBorder(C.border), padding: "28px 16px", textAlign: "center", transition: "all 0.25s", cursor: it.href ? "pointer" : "default", display: "flex", flexDirection: "column", alignItems: "center", boxSizing: "border-box", height: "100%" }}
